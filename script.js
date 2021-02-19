@@ -3,7 +3,7 @@
 
 let w;
 let h;
-let SIZE = 0;
+let SIZE =1;
 
 let music;
 let file_selector;
@@ -12,13 +12,14 @@ let analyser;
 let bufferLength
 let dataArray 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
+let mario_image ;
 
 
 window.onload = function () {
 	music = document.getElementById("music");
 	file_selector = document.getElementById("file_selector");
-	
-
+	mario_image = new Image();
+	mario_image.src = 'mario.png';
 	file_selector.addEventListener("change", function () {
 		console.log(file_selector.files[0].name)
 		let fReader = new FileReader();
@@ -50,7 +51,10 @@ window.onload = function () {
 				}, 0)/array.length
 				let v = Math.round(averge)
 				SIZE = 2*v/255;
-				display();
+				mario_image = new Image();
+	  			mario_image.src = 'mario.png';
+				console.log(mario_image);
+				display(mario_image);
 			});
 			
 		} catch (error) {
@@ -69,12 +73,12 @@ window.onload = function () {
 
 
 function main(){
-	display();
+	display(mario_image);
 }
 
 
 
-function display(){
+function display(mario_image){
 	let canvas = document.getElementById("myCanvas");
 	canvas.width=canvas.offsetWidth;
 	canvas.height=canvas.offsetHeight;
@@ -84,19 +88,17 @@ function display(){
 	let yc=Math.round(h/2);
 	let ctx = canvas.getContext("2d");
 	ctx.translate(xc,yc)
-	mario(h,w,ctx,0,0,SIZE);
+	mario(h,w,ctx,0,0,SIZE,mario_image);
 }
 
 
 
-function mario(h,w,ctx,x,y,size){
+function mario(h,w,ctx,x,y,size,mario_image){
 	ctx.beginPath();
 	var mario_h=h* size;
 	var mario_w=w* size;
 	let xo = x-(Math.round(mario_w/2));
 	let yo = y-(Math.round(mario_h/2));
-	mario_image = new Image();
-	mario_image.src = 'mario.png';
 	mario_image.onload = function(){
     ctx.drawImage(mario_image,xo,yo,mario_w,mario_h);
   	}
