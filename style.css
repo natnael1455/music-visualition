@@ -1,0 +1,45 @@
+/*note the changes to the gradient I made to make it work on Firefox*/
+body{
+	padding:0px;
+	margin:0px;
+	background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,151,255,1) 100%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+div {
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:100vmin;
+height:56vmin;
+}
+canvas{
+background:rgb(28, 137, 180);
+position:absolute;
+top:35px;
+width:294px;
+height:425px;
+}
+
+
+input {
+	position:absolute;
+	background:#08c96f;
+	color:rgb(255, 255, 255);
+	border-radius:5px;
+	border:none;
+	width:294px;
+	height:30px;
+}
+
+audio{
+	position:absolute;
+	top:465px;
+	background:#08c96f;
+	color:rgb(255, 255, 255);
+}
+
+
+
+
