@@ -3,7 +3,7 @@
 
 let w;
 let h;
-let SIZE = 0.5;
+let SIZE = 0;
 
 let music;
 let file_selector;
@@ -11,8 +11,7 @@ let audioCtx ;
 let analyser;
 let bufferLength
 let dataArray 
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 
 window.onload = function () {
@@ -30,18 +29,37 @@ window.onload = function () {
 	  });
 
 	  music.addEventListener('play',  function () {
-		audioCtx = new AudioContext();
+		//console.log(audioCtx);
+		try {
+			audioCtx = new AudioContext();
+			let source = audioCtx.createMediaElementSource(music);
+			//let gainNode = audioCtx.createGain();
+			let sourceJs = audioCtx.createScriptProcessor(2048, 1, 1);
+			let analyser = audioCtx.createAnalyser();
+			analyser.smoothingTimeConstant = 0.6;
+			analyser.fftSize = 512;
+			source.connect(analyser);
+			analyser.connect(sourceJs);
+			source.connect(audioCtx.destination);
+			sourceJs.connect(audioCtx.destination);
+			sourceJs.addEventListener('audioprocess', function (e) {
+				let array = new Uint8Array(analyser.frequencyBinCount);
+				analyser.getByteFrequencyData(array);
+				let averge = array.reduce(function(a, b){
+					return a + b;
+				}, 0)/array.length
+				let v = Math.round(averge)
+				SIZE = 2*v/255;
+				display();
+			});
+			
+		} catch (error) {
+			
+		}
 		
-		let source = audioCtx.createMediaElementSource(music);
-		let gainNode = audioCtx.createGain();
-		source.connect(gainNode);
-		gainNode.connect(audioCtx.destination);
-		console.log(source);
 	  });
 
-	  music.addEventListener('pause',  function () {
-		
-	  });
+	 
 	
  	main();
     
